@@ -1,24 +1,56 @@
-/bootstrap/compiled.php
+# Laravel 7 .gitignore
+
 /vendor
-
-
-/build/logs
-/build/coverage
-
-
-/app/tests/_log
-
-
-composer.phar
-.DS_Store
-
-/.idea
-/_ide_helper.php
-
-
-/app/config/packages
-/public/packages
 /node_modules
+/public/storage
+/storage/*.key
 .env
+.env.*.php
+Homestead.yaml
+Homestead.json
+*.log
+*.sqlite
+*.sqlite3
+*.bak
+*.tmp
 
+# Laravel specific
+/storage/app/public
+/storage/debugbar
+/storage/framework/cache/data
+/storage/framework/sessions
+/storage/framework/views
+/storage/logs
 
+# IDE/Editor
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Composer
+composer.lock
+
+# NPM/Yarn
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache
+
+# Git hooks
+.git/hooks
+
+# Docker
+docker-compose.override.yml
+
+# Others
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
