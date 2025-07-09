@@ -35,12 +35,23 @@ class FrontController extends Controller
     {
         $pengumuman = DB::table('pengumuman')->where('slug', $slug)->first();
 
-        // Jika pengumuman dengan slug tersebut tidak ditemukan, tampilkan error 404
+        // Jika pengumuman tidak ditemukan, tampilkan error 404
         if (!$pengumuman) {
             abort(404);
         }
 
-        return view('pengumuman.detail', ['pengumuman' => $pengumuman]);
+        // Ambil 5 pengumuman terbaru, kecuali yang sedang dibuka
+        $other_announcements = DB::table('pengumuman')
+            ->where('id', '!=', $pengumuman->id) // <-- Mengecualikan pengumuman saat ini
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Kirim semua data yang diperlukan ke view
+        return view('pengumuman.detail', [
+            'pengumuman' => $pengumuman,
+            'other_announcements' => $other_announcements
+        ]);
     }
 
     public function kontak()

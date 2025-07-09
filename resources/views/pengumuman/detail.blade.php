@@ -21,8 +21,9 @@
 
 @section('content')
     <div class="container pt-5 py-xl-5">
-        <div class="row justify-content-center">
-            <div class="col-md-9 col-lg-8">
+        <div class="row g-4 pt-5">
+
+            <div class="col-lg-8">
                 <div class="card border-0">
                     <div class="card-body p-4">
 
@@ -52,8 +53,37 @@
 
                         {{-- Tombol Kembali --}}
                         <a href="{{ route('pengumuman') }}" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left"></i> Lihat semua pengumuan
+                            <i class="fas fa-arrow-left"></i> Lihat Semua Pengumuman
                         </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 pt-5 ">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Pengumuman Lainnya</h5>
+                    </div>
+                    <div class="card-body">
+                        @forelse($other_announcements as $item)
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{{ asset('public/img/pengumuman/' . $item->foto) }}" alt="{{ $item->name }}"
+                                    class="me-3 rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                                <div>
+                                    <a href="{{ route('pengumuman.detail', $item->slug) }}"
+                                        class="text-decoration-none text-dark fw-bold" style="font-size: 0.9rem;">
+                                        {{ Str::limit($item->name, 55, '...') }}
+                                    </a>
+                                    <p class="small text-muted mb-0">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                            @if (!$loop->last)
+                                <hr class="my-2">
+                            @endif
+                        @empty
+                            <p class="text-muted">Tidak ada pengumuman lainnya.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
