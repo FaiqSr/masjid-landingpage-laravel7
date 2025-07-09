@@ -1,0 +1,68 @@
+.simple-slider .swiper-slide {
+  height: 500px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.simple-slider .swiper-button-next,
+.simple-slider .swiper-button-prev {
+  width: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+@media (max-width: 767px) {
+  .simple-slider .swiper-button-next,
+  .simple-slider .swiper-button-prev {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .simple-slider .swiper-slide {
+    height: 360px;
+  }
+}
+
+.testimonial-item {
+  margin-bottom: 20px;
+}
+
+.carousel-item {
+  transition: transform 1s ease-in-out;
+}
+
+/* Menghilangkan margin dan padding yang tidak diperlukan */
+
+.section-title {
+  margin-top: 33px;
+  margin-bottom: 0;
+}
+
+.section-link {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+/* Menghilangkan jarak dari link ke slider */
+
+.py-5 {
+  padding-top: 0 !important;
+}
+
+.testimonial-text {
+  /* height: 150px; */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-text p {
+  margin-bottom: 0;
+}
+
+.testimonial-item {
+  margin-bottom: 20px;
+  height: 100%;
+}
