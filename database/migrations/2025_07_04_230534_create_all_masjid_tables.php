@@ -111,17 +111,22 @@ class CreateAllMasjidTables extends Migration
 
         // Tabel untuk pengaturan umum website
         Schema::create('tbl_setting', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama')->nullable();
+            $table->id(); // Sesuai dengan bigint UNSIGNED AUTO_INCREMENT PRIMARY KEY
+            $table->string('nama', 191)->nullable();
             $table->text('alamat')->nullable();
             $table->text('visi_misi')->nullable();
             $table->text('tentang_kami')->nullable();
             $table->string('wa', 50)->nullable();
             $table->string('ig', 50)->nullable();
             $table->string('fb', 50)->nullable();
-            $table->string('youtube_url')->nullable();
-            $table->string('tiktok_url')->nullable();
-            $table->timestamps(); // Ditambahkan
+            $table->string('foto', 191)->nullable();
+            $table->string('logo', 191)->nullable();
+            $table->string('icon', 191)->nullable();
+            $table->string('kota_untuk_sholat', 100)->nullable()->default('Jakarta');
+            $table->text('running_text')->nullable();
+            $table->string('youtube_url', 191)->nullable();
+            $table->string('tiktok_url', 191)->nullable();
+            $table->timestamps(); // Membuat kolom created_at dan updated_at
         });
     }
 
