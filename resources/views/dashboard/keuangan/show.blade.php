@@ -14,7 +14,8 @@
     <div class="card card-widget widget-user-2">
         <div class="widget-user-header bg-info">
             <h3 class="widget-user-username">{{ $header->akun }}</h3>
-            <h5 class="widget-user-desc">Periode: {{ \Carbon\Carbon::parse($header->periode)->translatedFormat('F Y') }}</h5>
+            <h5 class="widget-user-desc">Periode: {{ \Carbon\Carbon::parse($header->periode)->translatedFormat('d F Y') }}
+            </h5>
         </div>
         <div class="card-footer p-0">
             <ul class="nav flex-column">

@@ -14,7 +14,7 @@ class CreateKeuanganHeaderTable extends Migration
     public function up()
     {
         Schema::create('keuangan_header', function (Blueprint $table) {
-            $table->id(); // Sesuai dengan `int UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY`
+            $table->id();
             $table->date('periode');
             $table->string('akun');
             $table->string('keterangan')->nullable();
@@ -22,7 +22,7 @@ class CreateKeuanganHeaderTable extends Migration
             $table->decimal('total_debet', 15, 2)->default(0.00);
             $table->decimal('total_kredit', 15, 2)->default(0.00);
             $table->decimal('saldo_akhir', 15, 2)->default(0.00);
-            $table->timestamps(); // Sesuai dengan `created_at` dan `updated_at`
+            $table->timestamps();
         });
     }
 

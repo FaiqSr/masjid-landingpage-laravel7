@@ -30,7 +30,7 @@
                             <label for="periode">Periode Laporan</label>
                             <input type="date" class="form-control @error('periode') is-invalid @enderror" id="periode"
                                 name="periode" value="{{ old('periode', date('Y-m-01')) }}">
-                            <small class="form-text text-muted">Pilih tanggal awal bulan untuk periode laporan.</small>
+                            <small class="form-text text-muted">Pilih tanggal untuk periode laporan.</small>
                             @error('periode')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

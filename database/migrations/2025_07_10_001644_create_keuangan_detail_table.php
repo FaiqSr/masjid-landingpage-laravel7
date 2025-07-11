@@ -15,7 +15,7 @@ class CreateKeuanganDetailTable extends Migration
     {
         Schema::create('keuangan_detail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('header_id'); // Kolom untuk relasi
+            $table->unsignedBigInteger('header_id');
             $table->date('tanggal_transaksi');
             $table->string('keterangan');
             $table->enum('tipe', ['D', 'K'])->comment('D=Debet (Masuk), K=Kredit (Keluar)');
@@ -26,7 +26,7 @@ class CreateKeuanganDetailTable extends Migration
             $table->foreign('header_id')
                 ->references('id')
                 ->on('keuangan_header')
-                ->onDelete('cascade'); // Otomatis hapus detail jika header dihapus
+                ->onDelete('cascade');
         });
     }
 
