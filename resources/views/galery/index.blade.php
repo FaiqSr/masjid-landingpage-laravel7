@@ -58,26 +58,33 @@
 
         <div class="row mb-4 pt-5">
             <div class="col">
-                <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Pengumuman Masjid</h1>
-                <p class="text-center text-muted">Informasi dan pengumuman terbaru seputar kegiatan masjid.</p>
+                <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Galeri Masjid</h1>
+                <p class="text-center text-muted">Foto terbaru seputar kegiatan masjid.</p>
             </div>
         </div>
 
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-
-            @foreach ($data as $galery)
-                <div class="col-md-3">
-                    <div class="gallery-item">
-                        <div style="height: 200px;">
-                            <img src="{{ asset('public/image/galery/' . $galery->url) }}" alt="Gambar"
-                                class="w-100 h-100 object-fit-cover">
-                        </div>
-                        <div class="overlay">
-                            <div class="overlay-text">{{ $galery->detail }}</div>
+            @if ($data->isNotEmpty())
+                @foreach ($data as $galery)
+                    <div class="col-md-3">
+                        <div class="gallery-item">
+                            <div style="height: 200px;">
+                                <img src="{{ asset('public/image/galery/' . $galery->url) }}" alt="Gambar"
+                                    class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="overlay">
+                                <div class="overlay-text">{{ $galery->detail }}</div>
+                            </div>
                         </div>
                     </div>
+                @endforeach
+            @else
+                <div class="" style="flex: 0 0 auto; width: 100%;">
+                    <div class="alert alert-warning text-center">
+                        Belum ada foto yang dipublikasikan.
+                    </div>
                 </div>
-            @endforeach
+            @endif
 
         </div>
         <div class="row mt-5">
