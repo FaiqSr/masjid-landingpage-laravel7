@@ -29,7 +29,6 @@
                                     {{ Str::limit(strip_tags($item->content), 100, '...') }}
                                 </p>
 
-                                {{-- Tombol dan Tanggal di bagian bawah kartu --}}
                                 <div class="mt-auto">
                                     <hr>
                                     <div class="d-flex justify-content-between align-items-center">
@@ -46,7 +45,7 @@
                     </div>
                 @endforeach
             @else
-                <div class="col-12">
+                <div class="" style="flex: 0 0 auto; width: 100%;">
                     <div class="alert alert-warning text-center">
                         Belum ada pengumuman yang dipublikasikan.
                     </div>

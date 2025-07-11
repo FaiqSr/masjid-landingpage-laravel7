@@ -13,32 +13,40 @@
         </div>
 
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            @foreach ($data as $item)
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
-                        @if ($item->image_url)
-                            <img class="card-img-top" src="{{ asset('public/img/uploads/' . $item->image_url) }}"
-                                alt="Thumbnail Berita" style="object-fit: cover; height: 200px;">
-                        @else
-                            <img class="card-img-top" src="{{ asset('img/empty.png') }}" alt="No Image Available"
-                                style="object-fit: cover; height: 200px;">
-                        @endif
-                        <div class="card-body p-4">
-                            <h4 class="card-title">{{ $item->title }}</h4>
-                            <p class="card-text text-muted small mb-2">
-                                <i class="far fa-calendar-alt"></i>
-                                {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}
-                            </p>
-                            <p class="card-text">{!! Str::limit(strip_tags($item->content), 150, '...') !!}</p>
-                        </div>
-                        <div class="card-footer bg-white border-top-0 pt-0">
-                            <a href="{{ route('artikel.detail', $item->slug) }}" class="btn btn-success btn-sm">
-                                Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i>
-                            </a>
+            @if ($data->isNotEmpty())
+                @foreach ($data as $item)
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0">
+                            @if ($item->image_url)
+                                <img class="card-img-top" src="{{ asset('public/img/uploads/' . $item->image_url) }}"
+                                    alt="Thumbnail Berita" style="object-fit: cover; height: 200px;">
+                            @else
+                                <img class="card-img-top" src="{{ asset('img/empty.png') }}" alt="No Image Available"
+                                    style="object-fit: cover; height: 200px;">
+                            @endif
+                            <div class="card-body p-4">
+                                <h4 class="card-title">{{ $item->title }}</h4>
+                                <p class="card-text text-muted small mb-2">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}
+                                </p>
+                                <p class="card-text">{!! Str::limit(strip_tags($item->content), 150, '...') !!}</p>
+                            </div>
+                            <div class="card-footer bg-white border-top-0 pt-0">
+                                <a href="{{ route('artikel.detail', $item->slug) }}" class="btn btn-success btn-sm">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                @endforeach
+            @else
+                <div class="" style="flex: 0 0 auto; width: 100%;">
+                    <div class="alert alert-warning text-center">
+                        Belum ada berita yang dipublikasikan.
+                    </div>
                 </div>
-            @endforeach
+            @endif
         </div>
 
         <div class="row mt-5">

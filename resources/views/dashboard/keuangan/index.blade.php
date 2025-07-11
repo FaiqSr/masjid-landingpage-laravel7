@@ -30,7 +30,7 @@
                 <tbody>
                     @foreach ($laporan as $item)
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($item->periode)->translatedFormat('F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->periode)->translatedFormat('d F Y') }}</td>
                             <td>
                                 <strong>{{ $item->akun }}</strong><br>
                                 <small>{{ $item->keterangan }}</small>

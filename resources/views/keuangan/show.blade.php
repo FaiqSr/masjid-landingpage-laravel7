@@ -10,7 +10,7 @@
             <div class="col">
                 <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Detail Laporan Keuangan</h1>
                 <h4 class="text-center text-muted">{{ $header->akun }} - Periode
-                    {{ \Carbon\Carbon::parse($header->periode)->translatedFormat('F Y') }}</h4>
+                    {{ \Carbon\Carbon::parse($header->periode)->translatedFormat('d F Y') }}</h4>
             </div>
         </div>
 

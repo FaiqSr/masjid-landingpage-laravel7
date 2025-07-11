@@ -29,7 +29,8 @@
                         <tbody>
                             @forelse ($laporan as $item)
                                 <tr>
-                                    <td class="fw-bold">{{ \Carbon\Carbon::parse($item->periode)->translatedFormat('F Y') }}
+                                    <td class="fw-bold">
+                                        {{ \Carbon\Carbon::parse($item->periode)->translatedFormat('d F Y') }}
                                     </td>
                                     <td>
                                         {{ $item->akun }}

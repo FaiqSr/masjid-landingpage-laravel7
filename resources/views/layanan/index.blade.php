@@ -56,26 +56,34 @@
 
         <div class="row mb-4 pt-5">
             <div class="col">
-                <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Pengumuman Masjid</h1>
-                <p class="text-center text-muted">Informasi dan pengumuman terbaru seputar kegiatan masjid.</p>
+                <h1 class="text-center" style="font-family: 'Times New Roman', Times, serif;">Layanan Masjid</h1>
             </div>
         </div>
 
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
 
-            @foreach ($data as $layanan)
-                <a class="col-md-3" href="{{ route('layanan.detail', $layanan->id) }}">
-                    <div class="gallery-item">
-                        <div style="height: 200px;">
-                            <img src="{{ asset('public/img/layanan/' . $layanan->foto) }}" alt="Gambar"
-                                class="w-100 h-100 object-fit-cover">
+            @if ($data->isNotEmpty())
+                @foreach ($data as $layanan)
+                    <a class="col-md-3" href="{{ route('layanan.detail', $layanan->id) }}">
+                        <div class="gallery-item">
+                            <div style="height: 200px;">
+                                <img src="{{ asset('public/img/layanan/' . $layanan->foto) }}" alt="Gambar"
+                                    class="w-100 h-100 object-fit-cover">
+                            </div>
+                            <div class="overlay">
+                                <div class="overlay-text">{{ $layanan->nama }}</div>
+                            </div>
                         </div>
-                        <div class="overlay">
-                            <div class="overlay-text">{{ $layanan->nama }}</div>
-                        </div>
+                    </a>
+                @endforeach
+            @else
+                <div class="" style="flex: 0 0 auto; width: 100%;">
+                    <div class="alert alert-warning text-center">
+                        Belum ada layanan yang dipublikasikan.
                     </div>
-                </a>
-            @endforeach
+                </div>
+            @endif
+
 
         </div>
         <div class="row mt-5">
