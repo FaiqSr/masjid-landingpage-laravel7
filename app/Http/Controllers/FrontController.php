@@ -14,9 +14,7 @@ class FrontController extends Controller
 
     public function beranda()
     {
-        // Fetch a limited number of gallery items for the homepage
-        $gallery_data = DB::table('galery')->orderBy('created_at', 'desc')->limit(8)->get(); // Ambil 8 gambar terbaru
-        return view('beranda', compact('gallery_data'));
+        return view('beranda');
     }
 
     public function profil()
@@ -56,7 +54,14 @@ class FrontController extends Controller
 
     public function kontak()
     {
-        return view('kontak');
+        // Ambil satu baris data dari tabel pengaturan
+        $setting = DB::table('tbl_setting')->first();
+
+        // Kirim data ke view 'kontak.blade.php'
+        return view('kontak', [
+            'title' => 'Kontak Kami',
+            'setting' => $setting
+        ]);
     }
 
     public function berita()

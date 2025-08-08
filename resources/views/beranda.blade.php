@@ -256,199 +256,33 @@
         </div>
     </header>
 
-    {{-- Bagian Info Wrapper (Alamat, Pengurus, Kontak) --}}
-    <section class="info-wrapper-section">
-        <section class="w-full position-relative">
-            @php
-                $pengurus = DB::table('pengurus')->get();
-            @endphp
-            <div class="info-wrapper">
-                <div class="info-col">
-                    <p class="title">Masjid Agung Kesultanan Jogja</p>
-                    <p class="address mt-1">
-                        Jl. Rusunawa Pesakih No.14, RT.3/RW.14, Duri Kosambi, Kecamatan Cengkareng, Kota Jakarta Barat,
-                        Daerah Khusus Ibukota Jakarta 11750
-                    </p>
-                </div>
-
-                <div class="info-col management-swiper">
-                    <div class="swiper pengurus-swiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($pengurus as $item)
-                                <div class="swiper-slide">
-                                    <div>
-                                        <img src="{{ asset('public/img/pengurus/' . $item->foto) }}"
-                                            alt="Foto {{ $item->nama }}" class="rounded">
-                                    </div>
-                                    <div>
-                                        <p class="fs-3 fw-bold m-0">{{ $item->nama }}</p>
-                                        <p class="m-0 small">{{ $item->jabatan }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-col">
-                    <p class="fw-bold fs-3">Pusat Info Masjid</p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="fs-3 text-dark"><i class="fa-brands fa-whatsapp"
-                                style="color: #007c6c;"></i></a>
-                        <a href="#" class="fs-3 text-dark"><i class="fa-brands fa-facebook"
-                                style="color: #007c6c;"></i></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </section>
-
-    {{-- Bagian Petugas Harian --}}
-    <section class="petugas-harian-section pt-5 pb-4">
+        <section class="pt-5 pb-5">
         <div class="container">
-            <div class="pb-2 d-flex justify-content-center">
-                <h2 class="fw-light mb-2 text-center px-3 py-1 "
-                    style="width: fit-content; border: 2px solid #007c6c; border-radius: 0.8rem; color: #007c6c; ">
-                    Petugas Harian
-                </h2>
-            </div>
-            @php
-                $petugasHarian = DB::table('petugas_harian')->get();
-            @endphp
-            @if ($petugasHarian->isNotEmpty())
-                <div class="swiper petugas-swiper">
-                    <div class="swiper-wrapper py-4">
-                        @foreach ($petugasHarian as $item)
-                            <div class="swiper-slide">
-                                <div class="card card-petugas shadow-sm">
-                                    <div class="card-header text-light fw-bold text-center"
-                                        style="background-color: #007c6c;">
-                                        <h5 class="mb-0 py-1">{{ $item->waktu }}</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <p>{{ $item->imam }}</p>
-                                            <p class="text-muted small">Imam</p>
-                                        </div>
-                                        <hr class="my-2">
-                                        <div class="d-flex justify-content-between">
-                                            <p>{{ $item->muadzin }}</p>
-                                            <p class="text-muted small">Muadzin</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @else
-                <div class="text-center text-muted py-5">
-                    <p>Jadwal petugas harian belum tersedia.</p>
-                </div>
-            @endif
-        </div>
-    </section>
-
-    {{-- Bagian Layanan Masjid --}}
-    @php
-        $layanan = DB::table('layanan')->get();
-    @endphp
-    <section class="container layanan-section pt-5">
-        <div style="width: fit-content;">
-            <h2
-                style="border: 2px solid #007c6c; padding: 0.5rem 1rem; color: #007c6c; font-weight: 300; font-size: 1.5rem;">
-                Layanan Masjid</h2>
-        </div>
-
-        @if ($layanan->isNotEmpty())
-            <div class="swiper layanan-swiper mt-2 mb-4">
-                <div class="swiper-wrapper py-4">
-                    @foreach ($layanan as $item)
-                        <a class="swiper-slide" href="{{ route('layanan.detail', $item->id) }}">
-                            <div class="card card-layanan text-center shadow-sm h-100" style="border-radius: 0;">
-                                <div class="d-flex align-items-center justify-content-center" style="height: 180px;">
-                                    <img src="{{ url('public/img/layanan/' . $item->foto) }}"
-                                        alt="Ikon {{ $item->nama }}"
-                                        style="max-height: 100%; width: 100%; object-fit: cover;">
-                                </div>
-                                <div class="card-body pt-4 pb-5" style="background-color: #007c6c;">
-                                    <h5 class="card-title fw-bold" style="color: white;">{{ $item->nama }}</h5>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @else
-            <div class="text-center text-muted mt-5">
-                <p>Informasi layanan belum tersedia.</p>
-            </div>
-        @endif
-    </section>
-
-    {{-- Pengumuman --}}
-    @php
-        // Mengambil 2 pengumuman terakhir berdasarkan tanggal pembuatan
-        $pengumuman = DB::table('pengumuman')->orderBy('created_at', 'desc')->limit(2)->get();
-    @endphp
-
-    <section class="pengumuman-container pt-5 pb-5" style="background-color: #19ac98;">
-        <section class="container">
-            {{-- Menggunakan Grid Bootstrap untuk responsivitas --}}
-            <div class="row align-items-center g-4">
-
-                <div class="col-lg-6">
-                    {{-- Kontainer gambar dibuat relatif untuk posisi overlay --}}
-                    <div style="position: relative; border-radius: 1rem; overflow: hidden; height: 350px;">
-                        @if ($pengumuman->isNotEmpty())
-                            {{-- Mengambil gambar dari pengumuman pertama --}}
-                            <img src="{{ asset('public/img/pengumuman/' . $pengumuman->first()->foto) }}"
-                                alt="Pengumuman Terbaru" class="w-100 h-100 object-fit-cover">
-                        @else
-                            {{-- Gambar fallback jika tidak ada pengumuman --}}
-                            <img src="{{ asset('public/image/galery/1750964242_beautiful-anime-sakura-cityscape-cartoon-scene.jpg') }}"
-                                alt="Pengumuman" class="w-100 h-100 object-fit-cover">
-                        @endif
-
-                        <div
-                            style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                            <h3 class="text-white fw-bold">Pengumuman Terbaru</h3>
-                            <p class="text-white mb-0">Masjid Iman Kuat</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h2 class="fw-bold">Cek Status & Cetak Bukti Pendaftaran</h2>
+                    <p class="text-muted mb-4">Masukkan Nomor Induk Kependudukan (NIK) calon siswa yang terdaftar untuk melihat detail dan mengunduh bukti pendaftaran.</p>
+                    
+                    <form action="{{ route('ppdb.search') }}" method="POST">
+                        @csrf
+                        <div class="input-group input-group-lg shadow-sm">
+                            <input type="text" class="form-control" name="nik" placeholder="Masukkan 16 digit NIK Calon Siswa..." style="border-radius: 0;" required minlength="16" maxlength="16" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                            <button class="btn" style="border-radius: 0; color: #007c6c; border: 2px solid #007c6c;" type="submit">
+                                <i class="fas fa-search me-2"></i>Cari Pendaftaran
+                            </button>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div style="border: 2px solid #ffffff; border-radius: 2rem; width: fit-content;" class="px-4 py-1 mb-4">
-                        <h2 style="color: white; margin: 0;">Pengumuman</h2>
-                    </div>
+                    </form>
 
-                    @if ($pengumuman->isNotEmpty())
-                        @foreach ($pengumuman as $item)
-                            <div class="mb-3">
-                                <h4 class="text-white fw-bold">{{ $item->name }}</h4>
-                                {{-- Konten dipotong agar tidak terlalu panjang, dan tag HTML dihapus --}}
-                                <p class="text-white-50">
-                                    {{ Str::limit(strip_tags($item->content), 150, '...') }}
-                                </p>
-                                <a href="{{ url('pengumuman/' . $item->slug) }}"
-                                    class="btn btn-outline-light btn-sm mt-2">
-                                    Baca Selengkapnya →
-                                </a>
-                            </div>
-                            {{-- Memberi garis pemisah jika ini bukan item terakhir --}}
-                            @if (!$loop->last)
-                                <hr class="text-white-50 my-4">
-                            @endif
-                        @endforeach
-                    @else
-                        <p class="text-white-50">Belum ada pengumuman terbaru saat ini.</p>
+                    @if (session('error'))
+                        <div class="alert alert-danger mt-3 shadow-sm">
+                            {{ session('error') }}
+                        </div>
                     @endif
                 </div>
             </div>
-        </section>
+        </div>
     </section>
-
-
+    
     @php
         $berita = DB::table('news')->limit(12)->get();
     @endphp
@@ -456,7 +290,7 @@
         <div style="width: fit-content;">
             <h2
                 style="border: 2px solid #007c6c; padding: 0.5rem 1rem; color: #007c6c; font-weight: 300; font-size: 1.5rem;">
-                Berita Masjid</h2>
+                Berita Sekolah</h2>
         </div>
 
         @if ($berita->isNotEmpty())

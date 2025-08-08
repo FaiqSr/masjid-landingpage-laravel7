@@ -8,35 +8,74 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
     public function login(Request $request)
     {
-        $user = DB::table('admins')->where('email', $request->email)->first();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if (Hash::check(@$request->password, @$user->password)) {
-            $data = DB::table('admins')->where('id', $user->id)->first();
+        $admin = DB::table('admins')->where('email', $request->email)->first();
+
+        if ($admin && Hash::check($request->password, $admin->password)) {
             session([
                 'berhasil_login' => true,
-                'id_user' => $data->id,
-                'id_role' => $data->id_role,
+                'id_user' => $admin->id,
+                'nama_user' => $admin->name,
+                'id_role' => $admin->id_role,
             ]);
 
-            //return redirect('dashboard');
-            $now = date('Y-m-d');
-            $cek = date('Y-12-d');
-            if ($now >= $cek) {
-                return redirect('/')->with('gagal', 'Gagal');
-            } else {
-                return redirect('dashboard');
-            }
-        } else {
-            return redirect('/')->with('gagal', 'Gagal');
+            return redirect('dashboard');
         }
+
+        return redirect()->route('login_page')->with('gagal', 'Email atau Password Admin salah.');
+    }
+
+    /**
+     * Menangani proses login untuk SISWA/PENDAFTAR.
+     * Menggunakan tabel 'akun_pendaftar'.
+     */
+    public function siswaLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $akun = DB::table('akun_pendaftar')->where('email', $request->email)->first();
+
+        // Cek jika akun pendaftar ditemukan dan password cocok
+        if ($akun && Hash::check($request->password, $akun->password_hash)) {
+            // Ambil data siswa terkait untuk disimpan di session
+            $siswa = DB::table('calon_siswa')->where('id_akun', $akun->id_akun)->first();
+
+            // Jika data siswa tidak ada, jangan biarkan login
+            if (!$siswa) {
+                return redirect()->route('login_page')->with('gagal', 'Akun siswa tidak terhubung dengan data pendaftaran.');
+            }
+
+            session([
+                'siswa_login' => true,
+                'id_akun' => $akun->id_akun,
+                'id_siswa' => $siswa->id_siswa,
+                'nama_siswa' => $siswa->nama_lengkap,
+                'email_siswa' => $akun->email,
+            ]);
+
+            return redirect()->route('dashboard.siswa.index');
+        }
+
+        return redirect()->route('login_page')->with('gagal', 'Email atau Password Siswa salah.');
     }
 
     public function logout()
     {
-        session()->forget(['id_user', 'id_role']);
-        session()->flush();
-        return redirect('/')->with('logout', 'Sukses');
+        session()->flush(); // Membersihkan semua data session
+        return redirect('/')->with('sukses', 'Anda berhasil logout.');
     }
 }

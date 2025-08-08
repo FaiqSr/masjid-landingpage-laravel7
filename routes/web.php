@@ -11,95 +11,32 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'FrontController@beranda')->name('beranda');
 Route::get('kontak', 'FrontController@kontak')->name('kontak');
 Route::get('artikel', 'FrontController@berita')->name('artikel');
-Route::get('artikel/{slug}', 'FrontController@beritaDetail')->name('artikel.detail');
-Route::get('pengumuman/', 'FrontController@pengumuman')->name('pengumuman');
-Route::get('pengumuman/{id}', 'FrontController@pengumumanDetail')->name('pengumuman.detail');
 Route::get('profil', 'FrontController@profil')->name('profil');
-Route::get('galery', 'FrontController@galery')->name('galery');
-Route::get('layanan/', 'FrontController@layanan')->name('layanan');
-Route::get('layanan/{id}', 'FrontController@layananDetail')->name('layanan.detail');
+Route::get('artikel/{slug}', 'FrontController@beritaDetail')->name('artikel.detail');
 
 Route::get('keuangan', 'FrontController@keuanganList')->name('keuangan.list');
 Route::get('keuangan/detail/{id}', 'FrontController@keuanganDetail')->name('keuangan.detail');
 
+Route::get('/ppdb/register', 'PpdbController@create')->name('ppdb.register');
+Route::post('/ppdb/store', 'PpdbController@store')->name('ppdb.store');
+Route::get('/ppdb/success', 'PpdbController@success')->name('ppdb.success');
 
+Route::post('/ppdb/search', 'PpdbController@searchByNik')->name('ppdb.search');
+Route::get('/ppdb/result/{id}', 'PpdbController@showResult')->name('ppdb.result.show');
+Route::get('/ppdb/result/{id}/download', 'PpdbController@downloadPdf')->name('ppdb.result.download');
 
-/*
-|--------------------------------------------------------------------------
-| Rute Otentikasi (Login/Logout)
-|--------------------------------------------------------------------------
-*/
-Route::get('login_page', 'FrontController@login_page')->name('login_page');
-Route::post('login', 'AuthController@login')->name('login');
+Route::group(['middleware' => 'authLogin'], function () {
+    Route::get('login_page', 'AuthController@showLogin')->name('login_page');
+    Route::post('loginSiswa', 'AuthController@siswaLogin')->name('login.siswa.submit');
+    Route::post('login', 'AuthController@login')->name('login.admin.submit');
+});
 Route::get('logout', 'AuthController@logout')->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| Rute Dasbor (Memerlukan Login)
-|--------------------------------------------------------------------------
-*/
 Route::group(['middleware' => 'CheckLoginMiddleware'], function () {
     // --- Rute Utama Dasbor ---
     Route::get('dashboard', 'DashboardController@index')->name('dashboard_admin');
     Route::get('ganti_setting', 'DashboardController@ganti_setting')->name('ganti_setting');
     Route::post('ganti_setting/resetsetting', 'DashboardController@reset_usersetting')->name('ganti_setting/resetsetting');
-
-    // --- Manajemen Petugas Harian ---
-    Route::prefix('dashboard/petugas-harian')
-        ->name('petugas.')
-        ->group(function () {
-            Route::get('/', 'PetugasController@index')->name('index');
-            Route::get('/edit/{id}', 'PetugasController@edit')->name('edit');
-            Route::post('/edit', 'PetugasController@update')->name('update');
-        });
-
-
-
-    Route::prefix('dashboard/keuangan')->name('keuangan.')->group(function () {
-        Route::get('/', 'KeuanganController@index')->name('index');
-        Route::get('/create', 'KeuanganController@create')->name('create');
-        Route::post('/store', 'KeuanganController@store')->name('store');
-        Route::get('/show/{id}', 'KeuanganController@show')->name('show');
-        Route::get('/delete/{id}', 'KeuanganController@destroy')->name('destroy');
-
-        Route::post('/detail/store/{header_id}', 'KeuanganController@storeDetail')->name('detail.store');
-        Route::get('/detail/delete/{id}', 'KeuanganController@destroyDetail')->name('detail.destroy');
-    });
-    // --- Manajemen Pengurus ---
-    Route::prefix('dashboard/pengurus')
-        ->name('pengurus.')
-        ->group(function () {
-            Route::get('/', 'PengurusController@index')->name('index');
-            Route::get('/create', 'PengurusController@create')->name('create');
-            Route::post('/store', 'PengurusController@store')->name('store');
-            Route::get('/edit/{id}', 'PengurusController@edit')->name('edit');
-            Route::put('/update/{id}', 'PengurusController@update')->name('update');
-            Route::get('/delete/{id}', 'PengurusController@destroy')->name('destroy');
-        });
-
-    // --- Manajemen Layanan ---
-    Route::prefix('dashboard/layanan')
-        ->name('layanan.')
-        ->group(function () {
-            Route::get('/', 'LayananController@index')->name('index');
-            Route::get('/create', 'LayananController@create')->name('create');
-            Route::post('/store', 'LayananController@store')->name('store');
-            Route::get('/edit/{id}', 'LayananController@edit')->name('edit');
-            Route::put('/update/{id}', 'LayananController@update')->name('update');
-            Route::get('/delete/{id}', 'LayananController@destroy')->name('destroy');
-        });
-
-    // --- Manajemen Pengumuman ---
-    Route::prefix('dashboard/pengumuman')
-        ->name('pengumuman.')
-        ->group(function () {
-            Route::get('/', 'PengumumanController@index')->name('index');
-            Route::get('/create', 'PengumumanController@create')->name('create');
-            Route::post('/store', 'PengumumanController@store')->name('store');
-            Route::get('/edit/{id}', 'PengumumanController@edit')->name('edit');
-            Route::put('/update/{id}', 'PengumumanController@update')->name('update');
-            Route::get('/delete/{id}', 'PengumumanController@destroy')->name('destroy');
-        });
 
     // --- Manajemen Berita (News) ---
     Route::prefix('dashboard/news')->group(function () {
@@ -137,4 +74,39 @@ Route::group(['middleware' => 'CheckLoginMiddleware'], function () {
         Route::get('/', 'SettingController@edit')->name('setting.edit');
         Route::put('/', 'SettingController@update')->name('setting.update');
     });
+
+    Route::prefix('dashboard/ppdb')
+        ->name('ppdb.')
+        ->group(function () {
+            Route::get('/', 'Admin\PpdbAdminController@index')->name('index');
+            Route::get('/siswa/{id}', 'Admin\PpdbAdminController@show')->name('show');
+
+            Route::get('/sudah-berkas', 'Admin\PpdbAdminController@sudahBerkas')->name('sudah_berkas');
+            Route::get('/belum-berkas', 'Admin\PpdbAdminController@belumBerkas')->name('belum_berkas');
+
+            // Menampilkan form edit (Edit)
+            Route::get('/{id}/edit', 'Admin\PpdbAdminController@edit')->name('edit');
+
+            // Memproses update dari form edit (Update)
+            Route::put('/{id}', 'Admin\PpdbAdminController@update')->name('update');
+
+            // Menghapus data pendaftar (Delete)
+            Route::delete('/{id}', 'Admin\PpdbAdminController@destroy')->name('destroy');
+        });
+
+    Route::get('/pengaturan-ppdb', 'Admin\PengaturanPpdbController@index')->name('pengaturan.index');
+    Route::post('/pengaturan-ppdb', 'Admin\PengaturanPpdbController@store')->name('pengaturan.store');
+    Route::put('/pengaturan-ppdb/{id}/set-active', 'Admin\PengaturanPpdbController@setActive')->name('pengaturan.setActive');
+    Route::delete('/pengaturan-ppdb/{id}', 'Admin\PengaturanPpdbController@destroy')->name('pengaturan.destroy');
+});
+
+Route::group(['middleware' => 'SiswaMiddleware'], function () {
+    Route::prefix('dashboard/siswa')
+        ->name('dashboard.')
+        ->group(function () {
+            Route::get('/', 'SiswaDashboardController@index')->name('siswa.index');
+            Route::get('/show', 'SiswaDashboardController@showData')->name('siswa.show');
+            Route::get('/edit', 'SiswaDashboardController@edit')->name('siswa.edit');
+            Route::put('/update', 'SiswaDashboardController@update')->name('siswa.update');
+        });
 });

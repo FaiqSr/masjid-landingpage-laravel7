@@ -208,12 +208,15 @@
                         <a class="nav-link" href="{{ route('profil') }}">PROFIL</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('kontak') }}">KONTAK</a>
+                    </li>
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ route('galery') }}">GALERI</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('artikel') }}">BERITA</a>
-                    </li>
-                    <li class="nav-item dropdown">
+                    </li> --}}
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="informasiDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             INFORMASI
@@ -223,42 +226,14 @@
                             <li><a class="dropdown-item" href="{{ route('pengumuman') }}">Pengumuman</a></li>
                             <li><a class="dropdown-item" href="{{ route('keuangan.list') }}">Keuangan Masjid</a></li>
                         </ul>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" style="border-color: #007c6c; border-radius: 0.5rem; color: #007c6c; margin-left: 2rem; margin-right: 2rem" href="{{ url('ppdb/register') }}" >DAFTAR</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('login_page') }}">LOGIN</a>
+                        <a class="btn btn-primary" style="border-color: #007c6c; border-radius: 0.5rem; background-color: #007c6c;" href="{{ url('login_page') }}" >LOGIN</a>
                     </li>
                 </ul>
-            </div>
-        </div>
-        <div id="prayer-times-section" class="bg-light py-2 border-bottom" style="border-radius: 0.5rem">
-            <div class="container d-flex justify-content-between flex-column align-items-center fs-6"
-                style="background-color: #f8f9fa;">
-                <div class="location-date me-3 mb-2 mb-md-0">
-                    <strong id="prayer-location">Memuat...</strong>
-                    <div id="prayer-date" class="small text-muted"></div>
-                </div>
-                <div id="prayer-times-bar" class="d-flex justify-content-around w-100">
-                    <div class="prayer-time text-center px-2">
-                        <div class="name">Subuh</div>
-                        <div id="fajr-time" class="time fw-bold">--:--</div>
-                    </div>
-                    <div class="prayer-time text-center px-2">
-                        <div class="name">Zuhur</div>
-                        <div id="dhuhr-time" class="time fw-bold">--:--</div>
-                    </div>
-                    <div class="prayer-time text-center px-2">
-                        <div class="name">Asar</div>
-                        <div id="asr-time" class="time fw-bold">--:--</div>
-                    </div>
-                    <div class="prayer-time text-center px-2">
-                        <div class="name">Magrib</div>
-                        <div id="maghrib-time" class="time fw-bold">--:--</div>
-                    </div>
-                    <div class="prayer-time text-center px-2">
-                        <div class="name">Isya</div>
-                        <div id="isha-time" class="time fw-bold">--:--</div>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
@@ -298,42 +273,6 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }, false);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Perubahan: Kota untuk waktu sholat dinamis
-            const city = "{{ $setting->kota_untuk_sholat ?? 'Jakarta' }}";
-            const country = "Indonesia";
-            const method = 11; // Metode Kemenag RI
-
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-            const apiUrl =
-                `https://api.aladhan.com/v1/timingsByCity/${day}-${month}-${year}?city=${city}&country=${country}&method=${method}`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.code === 200) {
-                        const timings = data.data.timings;
-                        const date = data.data.date.readable;
-                        document.getElementById('prayer-location').textContent = `${city}, Indonesia`;
-                        document.getElementById('prayer-date').textContent = date;
-                        document.getElementById('fajr-time').textContent = timings.Fajr;
-                        document.getElementById('dhuhr-time').textContent = timings.Dhuhr;
-                        document.getElementById('asr-time').textContent = timings.Asr;
-                        document.getElementById('maghrib-time').textContent = timings.Maghrib;
-                        document.getElementById('isha-time').textContent = timings.Isha;
-                    } else {
-                        console.error("Gagal mengambil data waktu sholat.");
-                        document.getElementById('prayer-location').textContent = "Gagal memuat data";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching prayer times:', error);
-                    document.getElementById('prayer-location').textContent = "Kesalahan jaringan";
-                });
-        });
     </script>
 
 </body>

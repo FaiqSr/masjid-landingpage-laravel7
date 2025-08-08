@@ -64,7 +64,7 @@
                         aria-expanded="true" class="nav-link dropdown-toggle">
                         <i class="fas fa-user-circle mr-2 text-lg"></i>
                         <span
-                            class="hidden-xs">{{ ucfirst(DB::table('admins')->find(session()->get('id_user'))->name) }}</span>
+                            class="hidden-xs">{{ session('nama_siswa') }}</span>
                     </a>
                     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow"
                         style="left: 0px; right: inherit;">
@@ -108,10 +108,10 @@
                     </div>
                     <div class="info">
                         <a href="#"
-                            class="d-block">{{ ucfirst(DB::table('admins')->find(session()->get('id_user'))->name) }}
+                            class="d-block">{{ session('nama_siswa') }}
                             <br>
                             <span
-                                class="small">{{ DB::table('admins')->find(session()->get('id_user'))->email }}</span>
+                                class="small">{{ DB::table('akun_pendaftar')->where('id_akun', session('id_akun'))->first()->email }}</span>
                         </a>
                     </div>
                 </div>
@@ -119,160 +119,28 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-
+ 
                         <li class="nav-item">
-                            <a href="{{ url('dashboard') }}"
-                                class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard.siswa.index') }}"
+                                class="nav-link {{ request()->is('dashboard/siswa') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-
-
-                        <li class="nav-header">MANAJEMEN KONTEN</li>
-
-                        @php
-                            $isKontenOpen =
-                                // request()->is('dashboard/pengumuman*') ||
-                                // request()->is('dashboard/petugas-harian*') ||
-                                // request()->is('dashboard/pengurus*') ||
-                                // request()->is('dashboard/layanan*') ||
-                                request()->is('dashboard/sliders*') ||
-                                // request()->is('dashboard/galery*') ||
-                                request()->is('dashboard/news*') ||
-                                request()->is('ganti_setting') ||
-                                request()->is('dashboard/settings*');
-                        @endphp
-                        <li class="nav-item {{ $isKontenOpen ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ $isKontenOpen ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Konten Website
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('dashboard/petugas-harian/') }}"
-                                        class="nav-link {{ request()->is('dashboard/petugas-harian*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Petugas Harian</p>
-                                    </a>
-                                </li> --}}
-                                {{-- New Menu Item for Pengurus --}}
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('dashboard/pengurus') }}"
-                                        class="nav-link {{ request()->is('dashboard/pengurus*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengurus</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('pengumuman.index') }}"
-                                        class="nav-link {{ request()->is('dashboard/pengumuman*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengumuman</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('layanan.index') }}"
-                                        class="nav-link {{ request()->is('dashboard/layanan*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Layanan</p>
-                                    </a>
-                                </li> --}}
-                                {{-- End of New Menu Item --}}
-                                <li class="nav-item">
-                                    <a href="{{ url('dashboard/sliders/index') }}"
-                                        class="nav-link {{ request()->is('dashboard/sliders*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Slider Beranda</p>
-                                    </a>
-                                </li>
-                                {{-- <li class="nav-item">
-                                    <a href="{{ url('dashboard/galery') }}"
-                                        class="nav-link {{ request()->is('dashboard/galery*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Galeri</p>
-                                    </a>
-                                </li> --}}
-                                <li class="nav-item">
-                                    <a href="{{ url('dashboard/news/index') }}"
-                                        class="nav-link {{ request()->is('dashboard/news*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Artikel (News)</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('setting.edit') }}"
-                                        class="nav-link {{ request()->is('dashboard/settings*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pengaturan Website</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        {{-- <li class="nav-header">MANAJEMEN KEUANGAN</li>
                         <li class="nav-item">
-                            <a href="{{ route('keuangan.index') }}"
-                                class="nav-link {{ request()->is('dashboard/keuangan*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-wallet"></i>
+                            <a href="{{ route('dashboard.siswa.edit') }}"
+                                class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Keuangan Masjid
-                                </p>
-                            </a>
-                        </li> --}}
-                        <li class="nav-header">MANAJEMEN PPDB</li>
-
-                        @php
-                            $isPpdbOpen = request()->is('dashboard/ppdb*');
-                        @endphp
-                        <li class="nav-item {{ $isPpdbOpen ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ $isPpdbOpen ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Data Pendaftar
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('ppdb.index') }}"
-                                        class="nav-link {{ request()->is('dashboard/ppdb') && !request()->is('dashboard/ppdb/*') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Semua Pendaftar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('ppdb.sudah_berkas') }}"
-                                        class="nav-link {{ request()->is('dashboard/ppdb/sudah-berkas') ? 'active' : '' }}">
-                                        <i class="far fa-check-circle nav-icon text-success"></i>
-                                        <p>Sudah Pemberkasan</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('ppdb.belum_berkas') }}"
-                                        class="nav-link {{ request()->is('dashboard/ppdb/belum-berkas') ? 'active' : '' }}">
-                                        <i class="far fa-times-circle nav-icon text-warning"></i>
-                                        <p>Belum Pemberkasan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('pengaturan.index') }}"
-                                class="nav-link {{ request()->is('dashboard/pengaturan-ppdb*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-cogs"></i>
-                                <p>
-                                    Pengaturan PPDB
+                                    Data Siswa
                                 </p>
                             </a>
                         </li>
 
+                        
+                        
                         <li class="nav-header">AKUN</li>
                         <li class="nav-item">
                             <a href="{{ url('logout') }}" class="nav-link text-danger">
